@@ -4,5 +4,6 @@ tmp/
 *.o
 regression.diffs
 regression.out
-/sql/ extension_name =>--*
-!/sql/<%= extension_name =>--*--*.sql
+/sql/pg_numnulls--*
+!/sql/pg_numnulls--*--*.sql
+.*.swp
