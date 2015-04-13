@@ -4,6 +4,6 @@ tmp/
 *.o
 regression.diffs
 regression.out
-/sql/pg_numnulls--*
-!/sql/pg_numnulls--*--*.sql
+/sql/pg_count_nulls--*
+!/sql/pg_count_nulls--*--*.sql
 .*.swp

@@ -1,15 +1,15 @@
 {
-    "name": "pg_numnulls",
+    "name": "pg_count_nulls",
     "abstract": "Count the number of null arguments",
     "description": "Provides a function that counts the number of null arguments passed to it.",
     "version": "0.1",
     "maintainer": "Jim C. Nasby",
     "license": ""BSD 2 Clause": "http://opensource.org/licenses/bsd-license.php"",
     "provides": {
-        "pg_numnulls": {
+        "pg_count_nulls": {
             "abstract": "Count the number of null arguments",
-            "file": "sql/pg_numnulls.sql",
-            "docfile": "doc/pg_numnulls.md",
+            "file": "sql/pg_count_nulls.sql",
+            "docfile": "doc/pg_count_nulls.md",
             "version": "0.1"
         }
     },
@@ -20,13 +20,13 @@
     "tags": [ "NULLs", "Count NULLs", "NULL count" ],
 
     "resources": {
-        "homepage": "http://github.com/decibel/pg_numnulls/",
+        "homepage": "http://github.com/decibel/pg_count_nulls/",
         "bugtracker": {
-            "web": "http://github.com/decibel/pg_numnulls/issues"
+            "web": "http://github.com/decibel/pg_count_nulls/issues"
         },
         "repository": {
-            "url": "git://github.com/decibel/pg_numnulls.git",
-            "web": "http://github.com/decibel/pg_numnulls/",
+            "url": "git://github.com/decibel/pg_count_nulls.git",
+            "web": "http://github.com/decibel/pg_count_nulls/",
             "type": "git"
         }
     },
