@@ -1,5 +1,5 @@
 CREATE SCHEMA _null_count_test;
-SET SEARCH_PATH = _null_count_test, tap, "$user";
+SET SEARCH_PATH = _null_count_test, :schema, tap, "$user";
 
 /*
  * NOTE! Do not use create or replace function in here. If you do that and
