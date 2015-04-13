@@ -35,6 +35,10 @@ endif
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
 
+.PHONY: test
+test: clean install installcheck
+	if [ -r regression.diffs ]; then cat regression.diffs; fi
+
 .PHONY: results
 results:
 	rsync -rlpgovP results/ test/expected
