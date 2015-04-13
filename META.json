@@ -17,9 +17,24 @@
 
     "generated_by": "Jim C. Nasby",
 
+    "tags": [ "NULLs", "Count NULLs", "NULL count" ],
+
+    "resources": {
+        "homepage": "http://github.com/decibel/pg_numnulls/",
+        "bugtracker": {
+            "web": "http://github.com/decibel/pg_numnulls/issues"
+        },
+        "repository": {
+            "url": "git://github.com/decibel/pg_numnulls.git",
+            "web": "http://github.com/decibel/pg_numnulls/",
+            "type": "git"
+        }
+    },
 
     "meta-spec": {
         "version": "1.0.0",
         "url": "http://pgxn.org/meta/spec.txt"
-    }
+    },
+    
+    "X_vi": "vi: expandtab ts=4 sw=4"
 }

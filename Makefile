@@ -1,5 +1,7 @@
-EXTENSION    = pg_numnulls
-EXTVERSION   = $(shell grep default_version $(EXTENSION).control | sed -e "s/default_version[[:space:]]*=[[:space:]]*'\([^']*\)'/\1/")
+EXTENSION = $(shell grep -m 1 '"name":' META.json | \
+sed -e 's/[[:space:]]*"name":[[:space:]]*"\([^"]*\)",/\1/')
+EXTVERSION = $(shell grep -m 1 '"version":' META.json | \
+sed -e 's/[[:space:]]*"version":[[:space:]]*"\([^"]*\)",\{0,1\}/\1/')
 
 DATA         = $(filter-out $(wildcard sql/*--*.sql),$(wildcard sql/*.sql))
 DOCS         = $(wildcard doc/*.md)
@@ -12,9 +14,15 @@ REGRESS_OPTS = --inputdir=test --load-language=plpgsql
 #
 #MODULES      = $(patsubst %.c,%,$(wildcard src/*.c))
 PG_CONFIG    = pg_config
-PG91         = $(shell $(PG_CONFIG) --version | grep -qE " 8\.| 9\.0" && echo no || echo yes)
 
-ifeq ($(PG91),yes)
+VERSION 	 = $(shell $(PG_CONFIG) --version | awk '{print $$2}' | sed -e 's/devel$$//')
+MAJORVER 	 = $(shell echo $(VERSION) | cut -d . -f1,2 | tr -d .)
+
+test		 = $(shell test $(1) $(2) $(3) && echo yes || echo no)
+
+GE91		 = $(call test, $(MAJORVER), -ge, 91)
+
+ifeq ($(GE91),yes)
 all: sql/$(EXTENSION)--$(EXTVERSION).sql
 
 sql/$(EXTENSION)--$(EXTVERSION).sql: sql/$(EXTENSION).sql
@@ -26,3 +34,17 @@ endif
 
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
+
+.PHONY: results
+results:
+	rsync -rlpgovP results/ test/expected
+
+tag:
+	git branch $(EXTVERSION)
+	git push --set-upstream origin $(EXTVERSION)
+
+dist:
+	git archive --prefix=$(EXTENSION)-$(EXTVERSION)/ -o $(EXTENSION)-$(EXTVERSION).zip HEAD
+
+# To use this, do make print-VARIABLE_NAME
+print-%  : ; @echo $* = $($*)
