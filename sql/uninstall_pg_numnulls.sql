@@ -11,11 +11,9 @@
 SET client_min_messages = warning;
 
 BEGIN;
-
--- You can use this statements as
--- template for your extension.
-
-DROP OPERATOR #? (text, text);
-DROP FUNCTION pg_numnulls(text, text);
-DROP TYPE pg_numnulls CASCADE;
+DROP FUNCTION null_count(
+  VARIADIC argument anyarray
+);
 COMMIT;
+
+-- vi: expandtab sw=2 ts=2
