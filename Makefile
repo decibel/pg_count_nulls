@@ -35,6 +35,9 @@ endif
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
 
+# Don't have installcheck bomb on error
+.IGNORE: installcheck
+
 .PHONY: test
 test: clean install installcheck
 	@if [ -r regression.diffs ]; then cat regression.diffs; fi
