@@ -1,0 +1,4 @@
+# pg_numnulls extension
+comment = 'Count the number of null arguments'
+default_version = '0.1'
+relocatable = true
