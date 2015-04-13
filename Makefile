@@ -40,7 +40,7 @@ test: clean install installcheck
 	if [ -r regression.diffs ]; then cat regression.diffs; fi
 
 .PHONY: results
-results:
+results: test
 	rsync -rlpgovP results/ test/expected
 
 tag:
