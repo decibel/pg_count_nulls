@@ -37,7 +37,7 @@ include $(PGXS)
 
 .PHONY: test
 test: clean install installcheck
-	if [ -r regression.diffs ]; then cat regression.diffs; fi
+	@if [ -r regression.diffs ]; then cat regression.diffs; fi
 
 .PHONY: results
 results: test
