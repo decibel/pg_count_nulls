@@ -49,11 +49,11 @@ CREATE FUNCTION test__functionality
 () RETURNS SETOF text LANGUAGE plpgsql AS $body$
 DECLARE
 BEGIN
-  CREATE TEMP VIEW test_data AS
+  CREATE TEMP TABLE test_data AS
     SELECT * FROM (
     VALUES
       -- Can't make first argument bigint without variant
-        ( 1::int, 2::int, 3::smallint, 0 )
+        ( 1::int, 2::int, 3::int, 0 )
       , ( 1,    2,    NULL, 1 )
       , ( 1,    NULL, 3,    1 )
       , ( 1,    NULL, NULL, 2 )
