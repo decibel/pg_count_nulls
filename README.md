@@ -5,8 +5,6 @@ Provides a function that counts the number of null arguments passed to it.
 
 To build it, just do this:
 
-    make
-    make installcheck
     make install
 
 If you encounter an error such as:
@@ -16,9 +14,7 @@ If you encounter an error such as:
 You need to use GNU make, which may well be installed on your system as
 `gmake`:
 
-    gmake
     gmake install
-    gmake installcheck
 
 If you encounter an error such as:
 
@@ -45,7 +41,7 @@ If you encounter an error such as:
 You need to run the test suite using a super user, such as the default
 "postgres" super user:
 
-    make installcheck PGUSER=postgres
+    make test PGUSER=postgres
 
 Once count_nulls is installed, you can add it to a database. If you're running
 PostgreSQL 9.1.0 or greater, it's a simple as connecting to a database as a
@@ -76,5 +72,5 @@ The `count_nulls` data type has no dependencies other than PostgreSQL.
 Copyright and License
 ---------------------
 
-Copyright (c) 2015 Jim C. Nasby.
+Copyright (c) 2015 Jim Nasby, Blue Treble Consulting http://BlueTreble.com
 
