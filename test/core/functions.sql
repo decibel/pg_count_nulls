@@ -22,23 +22,25 @@ $body$;
 CREATE FUNCTION test__definition
 () RETURNS SETOF text LANGUAGE plpgsql AS $body$
 DECLARE
-  f_name CONSTANT name := 'null_count';
+  f_name name;
   f_args CONSTANT text[] := '{anyarray}';
 BEGIN
-  RETURN NEXT function_returns(
-    f_name, f_args
-    , 'integer'
-  );
+  FOREACH f_name IN ARRAY '{null_count,not_null_count}'::name[] LOOP
+    RETURN NEXT function_returns(
+      f_name, f_args
+      , 'integer'
+    );
 
-  -- TODO: isnt_definer
-  RETURN NEXT isnt_strict(
-    f_name, f_args
-  );
+    -- TODO: isnt_definer
+    RETURN NEXT isnt_strict(
+      f_name, f_args
+    );
 
-  RETURN NEXT volatility_is(
-    f_name, f_args
-    , 'immutable'
-  );
+    RETURN NEXT volatility_is(
+      f_name, f_args
+      , 'immutable'
+    );
+  END LOOP;
 END
 $body$;
 
@@ -65,14 +67,14 @@ BEGIN
   ;
 
   RETURN NEXT bag_eq(
-    $$SELECT a, b, c, null_count( a, b, c ) FROM test_data$$
-    , $$SELECT * FROM test_data$$
+    $$SELECT a, b, c, null_count( a, b, c ), not_null_count( a, b, c ) FROM test_data$$
+    , $$SELECT *, 3-null_count AS not_null_count FROM test_data$$
     , 'Test null_count(a, b, c)'
   );
 
   RETURN NEXT bag_eq(
-    $$SELECT a, b, c, null_count( c, b, a ) FROM test_data$$
-    , $$SELECT * FROM test_data$$
+    $$SELECT a, b, c, null_count( c, b, a ), not_null_count( c, b, a ) FROM test_data$$
+    , $$SELECT *, 3-null_count AS not_null_count FROM test_data$$
     , 'Test null_count(c, b, a)'
   );
 
