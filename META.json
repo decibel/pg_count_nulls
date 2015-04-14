@@ -4,7 +4,9 @@
     "description": "Provides a function that counts the number of null arguments passed to it.",
     "version": "0.1",
     "maintainer": "Jim C. Nasby",
-    "license": ""BSD 2 Clause": "http://opensource.org/licenses/bsd-license.php"",
+    "license": {
+        "BSD 2 Clause": "http://opensource.org/licenses/bsd-license.php"
+    },
     "provides": {
         "count_nulls": {
             "abstract": "Count the number of null arguments",
