@@ -1,4 +1,4 @@
-pg_count_nulls
+count_nulls
 ===========
 
 Synopsis

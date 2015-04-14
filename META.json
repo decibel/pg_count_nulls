@@ -1,15 +1,15 @@
 {
-    "name": "pg_count_nulls",
+    "name": "count_nulls",
     "abstract": "Count the number of null arguments",
     "description": "Provides a function that counts the number of null arguments passed to it.",
     "version": "0.1",
     "maintainer": "Jim C. Nasby",
     "license": ""BSD 2 Clause": "http://opensource.org/licenses/bsd-license.php"",
     "provides": {
-        "pg_count_nulls": {
+        "count_nulls": {
             "abstract": "Count the number of null arguments",
-            "file": "sql/pg_count_nulls.sql",
-            "docfile": "doc/pg_count_nulls.md",
+            "file": "sql/count_nulls.sql",
+            "docfile": "doc/count_nulls.md",
             "version": "0.1"
         }
     },

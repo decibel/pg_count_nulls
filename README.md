@@ -1,4 +1,4 @@
-pg_count_nulls
+count_nulls
 ===========
 
 Provides a function that counts the number of null arguments passed to it.
@@ -47,31 +47,31 @@ You need to run the test suite using a super user, such as the default
 
     make installcheck PGUSER=postgres
 
-Once pg_count_nulls is installed, you can add it to a database. If you're running
+Once count_nulls is installed, you can add it to a database. If you're running
 PostgreSQL 9.1.0 or greater, it's a simple as connecting to a database as a
 super user and running:
 
-    CREATE EXTENSION pg_count_nulls;
+    CREATE EXTENSION count_nulls;
 
-If you've upgraded your cluster to PostgreSQL 9.1 and already had pg_count_nulls
+If you've upgraded your cluster to PostgreSQL 9.1 and already had count_nulls
 installed, you can upgrade it to a properly packaged extension with:
 
-    CREATE EXTENSION pg_count_nulls FROM unpackaged;
+    CREATE EXTENSION count_nulls FROM unpackaged;
 
 For versions of PostgreSQL less than 9.1.0, you'll need to run the
 installation script:
 
-    psql -d mydb -f /path/to/pgsql/share/contrib/pg_count_nulls.sql
+    psql -d mydb -f /path/to/pgsql/share/contrib/count_nulls.sql
 
-If you want to install pg_count_nulls and all of its supporting objects into a specific
+If you want to install count_nulls and all of its supporting objects into a specific
 schema, use the `PGOPTIONS` environment variable to specify the schema, like
 so:
 
-    PGOPTIONS=--search_path=extensions psql -d mydb -f pg_count_nulls.sql
+    PGOPTIONS=--search_path=extensions psql -d mydb -f count_nulls.sql
 
 Dependencies
 ------------
-The `pg_count_nulls` data type has no dependencies other than PostgreSQL.
+The `count_nulls` data type has no dependencies other than PostgreSQL.
 
 Copyright and License
 ---------------------

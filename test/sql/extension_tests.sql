@@ -5,7 +5,7 @@
 
 \set schema schema_to_load_count_nulls
 CREATE SCHEMA :schema;
-ALTER EXTENSION pg_count_nulls SET SCHEMA :schema;
+ALTER EXTENSION count_nulls SET SCHEMA :schema;
 
 \i test/core/functions.sql
 
@@ -13,7 +13,7 @@ CREATE FUNCTION shutdown__drop_all
 () RETURNS SETOF text LANGUAGE plpgsql AS $body$
 BEGIN
     RETURN NEXT lives_ok(
-        $$DROP EXTENSION pg_count_nulls$$
+        $$DROP EXTENSION count_nulls$$
     );
 
     RETURN NEXT lives_ok(
