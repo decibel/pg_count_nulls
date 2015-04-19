@@ -14,4 +14,21 @@ CREATE OR REPLACE FUNCTION not_null_count(
     FROM unnest( $1 ) a
 $body$;
 
+
+CREATE OR REPLACE FUNCTION null_count(
+  argument json
+) RETURNS bigint LANGUAGE sql IMMUTABLE AS $body$
+SELECT count(*)
+  FROM json_each_text( $1 ) a
+  WHERE value IS NULL
+$body$;
+
+CREATE OR REPLACE FUNCTION not_null_count(
+  argument json
+) RETURNS bigint LANGUAGE sql IMMUTABLE AS $body$
+SELECT count(*)
+  FROM json_each_text( $1 ) a
+  WHERE value IS NOT NULL
+$body$;
+
 -- vi: expandtab sw=2 ts=2

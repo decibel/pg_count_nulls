@@ -23,23 +23,27 @@ CREATE FUNCTION test__definition
 () RETURNS SETOF text LANGUAGE plpgsql AS $body$
 DECLARE
   f_name name;
-  f_args CONSTANT text[] := '{anyarray}';
+  t text;
+  f_args text[];
 BEGIN
   FOREACH f_name IN ARRAY '{null_count,not_null_count}'::name[] LOOP
+    FOREACH t IN ARRAY '{anyarray,json}'::text[] LOOP
+      f_args := array[t];
       RETURN NEXT function_returns(
         f_name, f_args
         , 'bigint'
       );
 
-    -- TODO: isnt_definer
-    RETURN NEXT isnt_strict(
-      f_name, f_args
-    );
+      -- TODO: isnt_definer
+      RETURN NEXT isnt_strict(
+        f_name, f_args
+      );
 
-    RETURN NEXT volatility_is(
-      f_name, f_args
-      , 'immutable'
-    );
+      RETURN NEXT volatility_is(
+        f_name, f_args
+        , 'immutable'
+      );
+    END LOOP;
   END LOOP;
 END
 $body$;
@@ -72,13 +76,15 @@ BEGIN
     , 'Test null_count(a, b, c)'
   );
 
+  -- Test JSON versions
   RETURN NEXT bag_eq(
-    $$SELECT a, b, c, null_count( c, b, a ), not_null_count( c, b, a ) FROM test_data$$
+    $$SELECT a, b, c, null_count( row_to_json( row(a, b, c) ) ), not_null_count( row_to_json( row(a, b, c) ) ) FROM test_data$$
     , $$SELECT *, 3-null_count AS not_null_count FROM test_data$$
-    , 'Test null_count(c, b, a)'
+    , 'Test null_count(a, b, c)'
   );
 
-  -- Doesn't work for regular types
+
+  -- Doesn't work for array types
   /*
   RETURN NEXT bag_eq(
     $$SELECT a, b, c, null_count( array[a], array[b], array[c] ) FROM test_data$$
