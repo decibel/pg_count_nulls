@@ -1,4 +1,4 @@
-SET client_min_messages = warning;
+SET client_min_messages = WARNING;
 
 CREATE OR REPLACE FUNCTION null_count(
   VARIADIC argument anyarray
