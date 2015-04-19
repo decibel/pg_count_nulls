@@ -26,10 +26,10 @@ DECLARE
   f_args CONSTANT text[] := '{anyarray}';
 BEGIN
   FOREACH f_name IN ARRAY '{null_count,not_null_count}'::name[] LOOP
-    RETURN NEXT function_returns(
-      f_name, f_args
-      , 'integer'
-    );
+      RETURN NEXT function_returns(
+        f_name, f_args
+        , 'bigint'
+      );
 
     -- TODO: isnt_definer
     RETURN NEXT isnt_strict(
