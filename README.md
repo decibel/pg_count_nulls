@@ -1,8 +1,11 @@
 count_nulls
 ===========
 
-Provides a function that counts the number of null arguments passed to it.
+Provides a function that counts the number of (not) null arguments passed to
+it. Also provides a version for counting nulls in a JSON document, which makes
+it easy to count the number of nulls in a record.
 
+# Installation #
 To build it, just do this:
 
     make install

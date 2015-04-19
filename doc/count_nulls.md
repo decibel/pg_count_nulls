@@ -11,7 +11,17 @@ arguments must be of the same type. See the examples.
 You also need to do something special to pass arrays to a VARIADIC function.
 See the Postgres docs.
 
+## null_count( json ) ##
+Similar to the VARIADIC version, this will count the number of *top level*
+elements in a JSON document that are NULL.
+
+This can also be used to easily count the number of nulls in a record or row,
+by calling row_to_json() first.
+
+TODO: Allow counting nulls in an entire JSON document.
+
 ## not_null_count( VARIADIC anyarray ) ##
+## not_null_count( json ) ##
 Same as null_count() except this returns the number of fields that are NOT NULL.
 
 ## Examples ##
