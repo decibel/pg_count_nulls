@@ -2,7 +2,7 @@
     "name": "count_nulls",
     "abstract": "Count the number of null arguments",
     "description": "Provides a function that counts the number of null arguments passed to it.",
-    "version": "0.9.1",
+    "version": "0.9.2",
     "maintainer": "Jim C. Nasby",
     "license": {
         "BSD 2 Clause": "http://opensource.org/licenses/bsd-license.php"
@@ -12,7 +12,7 @@
             "abstract": "Count the number of null arguments",
             "file": "sql/count_nulls.sql",
             "docfile": "doc/count_nulls.md",
-            "version": "0.9.1"
+            "version": "0.9.2"
         }
     },
     "release_status": "stable",
