@@ -12,11 +12,53 @@
     ok 10 - Function not_null_count(json) should return bigint
     ok 11 - Function not_null_count(json) should not be strict
     ok 12 - Function not_null_count(json) should be IMMUTABLE
-    1..12
+    ok 13 - Function null_count_trigger() should return trigger
+    ok 14 - Function null_count_trigger() should not be strict
+    ok 15 - Function null_count_trigger() should be IMMUTABLE
+    ok 16 - Function not_null_count_trigger() should return trigger
+    ok 17 - Function not_null_count_trigger() should not be strict
+    ok 18 - Function not_null_count_trigger() should be IMMUTABLE
+    1..18
 ok 1 - _null_count_test.test__definition
     # Subtest: _null_count_test.test__functionality()
     ok 1 - Test null_count(a, b, c)
     ok 2 - Test null_count(a, b, c)
-    1..2
+    ok 3 - CREATE TRIGGER "test trigger" BEFORE INSERT ON test_data FOR EACH ROW EXECUTE PROCEDURE not_null_count_trigger( NULL )
+    ok 4 - Test not_null_count_trigger( NULL )
+    ok 5 - DROP TRIGGER "test trigger"
+    ok 6 - CREATE TRIGGER "test trigger" BEFORE INSERT ON test_data FOR EACH ROW EXECUTE PROCEDURE not_null_count_trigger(  )
+    ok 7 - Test not_null_count_trigger(  )
+    ok 8 - DROP TRIGGER "test trigger"
+    ok 9 - CREATE TRIGGER "test trigger" BEFORE INSERT ON test_data FOR EACH ROW EXECUTE PROCEDURE null_count_trigger( NULL )
+    ok 10 - Test null_count_trigger( NULL )
+    ok 11 - DROP TRIGGER "test trigger"
+    ok 12 - CREATE TRIGGER "test trigger" BEFORE INSERT ON test_data FOR EACH ROW EXECUTE PROCEDURE null_count_trigger(  )
+    ok 13 - Test null_count_trigger(  )
+    ok 14 - DROP TRIGGER "test trigger"
+    ok 15 - CREATE TRIGGER "null_BEFORE_error_message" BEFORE INSERT ON test_data FOR EACH ROW EXECUTE PROCEDURE null_count_trigger(1, 'error_message')
+    ok 16 - Test "null_BEFORE_error_message"
+    ok 17 - DROP TRIGGER "null_BEFORE_error_message"
+    ok 18 - CREATE TRIGGER "null_AFTER_error_message" AFTER INSERT ON test_data FOR EACH ROW EXECUTE PROCEDURE null_count_trigger(1, 'error_message')
+    ok 19 - Test "null_AFTER_error_message"
+    ok 20 - DROP TRIGGER "null_AFTER_error_message"
+    ok 21 - CREATE TRIGGER "not_null_BEFORE_error_message" BEFORE INSERT ON test_data FOR EACH ROW EXECUTE PROCEDURE not_null_count_trigger(1, 'error_message')
+    ok 22 - Test "not_null_BEFORE_error_message"
+    ok 23 - DROP TRIGGER "not_null_BEFORE_error_message"
+    ok 24 - CREATE TRIGGER "not_null_AFTER_error_message" AFTER INSERT ON test_data FOR EACH ROW EXECUTE PROCEDURE not_null_count_trigger(1, 'error_message')
+    ok 25 - Test "not_null_AFTER_error_message"
+    ok 26 - DROP TRIGGER "not_null_AFTER_error_message"
+    ok 27 - CREATE TRIGGER "null_BEFORE_" BEFORE INSERT ON test_data FOR EACH ROW EXECUTE PROCEDURE null_count_trigger(1, NULL)
+    ok 28 - Test "null_BEFORE_"
+    ok 29 - DROP TRIGGER "null_BEFORE_"
+    ok 30 - CREATE TRIGGER "null_AFTER_" AFTER INSERT ON test_data FOR EACH ROW EXECUTE PROCEDURE null_count_trigger(1, NULL)
+    ok 31 - Test "null_AFTER_"
+    ok 32 - DROP TRIGGER "null_AFTER_"
+    ok 33 - CREATE TRIGGER "not_null_BEFORE_" BEFORE INSERT ON test_data FOR EACH ROW EXECUTE PROCEDURE not_null_count_trigger(1, NULL)
+    ok 34 - Test "not_null_BEFORE_"
+    ok 35 - DROP TRIGGER "not_null_BEFORE_"
+    ok 36 - CREATE TRIGGER "not_null_AFTER_" AFTER INSERT ON test_data FOR EACH ROW EXECUTE PROCEDURE not_null_count_trigger(1, NULL)
+    ok 37 - Test "not_null_AFTER_"
+    ok 38 - DROP TRIGGER "not_null_AFTER_"
+    1..38
 ok 2 - _null_count_test.test__functionality
 1..2
