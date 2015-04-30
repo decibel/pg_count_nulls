@@ -45,12 +45,87 @@ BEGIN
       );
     END LOOP;
   END LOOP;
+
+  FOREACH f_name IN ARRAY '{null_count_trigger,not_null_count_trigger}'::name[] LOOP
+    f_args := '{}';
+    RETURN NEXT function_returns(
+      f_name, f_args
+      , 'trigger'
+    );
+
+    -- TODO: isnt_definer
+    RETURN NEXT isnt_strict(
+      f_name, f_args
+    );
+
+    RETURN NEXT volatility_is(
+      f_name, f_args
+      , 'immutable'
+    );
+  END LOOP;
 END
 $body$;
 
 /*
  * Operation
  */
+
+CREATE FUNCTION pg_temp.test_trigger_raw(
+  trigger_name name
+  , ba text
+  , exec text
+  , errmsg text
+  , errdesc text
+
+) RETURNS SETOF text LANGUAGE plpgsql AS $body$
+DECLARE
+  c_command CONSTANT text :=
+    format( $$CREATE TRIGGER %s %s INSERT ON test_data FOR EACH ROW EXECUTE PROCEDURE %s$$
+      , trigger_name
+      , ba
+      , exec
+    )
+  ;
+BEGIN
+  RETURN NEXT lives_ok( c_command, c_command );
+  RETURN NEXT throws_ok(
+    $$INSERT INTO test_data VALUES (1,1,NULL)$$
+    , 'P0001'
+    , errmsg
+    , errdesc
+  );
+
+  RETURN NEXT lives_ok(
+    format( 'DROP TRIGGER %s ON test_data', trigger_name )
+    , format( 'DROP TRIGGER %s', trigger_name )
+  );
+END
+$body$;
+
+CREATE FUNCTION pg_temp.test_trigger(
+  ba text
+  , nn text
+  , err text
+) RETURNS SETOF text LANGUAGE plpgsql AS $body$
+DECLARE
+  c_trigger_name CONSTANT text := quote_ident(format('%s_%s_%s', nn, ba, err));
+BEGIN
+  RETURN QUERY
+    SELECT pg_temp.test_trigger_raw(
+      c_trigger_name
+      , ba
+      , exec := format(
+          $$%s_count_trigger(1, %L)$$
+          , nn
+          , err
+        )
+      , errmsg := coalesce( err, format( 'test_data must contain 1 %s fields', upper( replace( nn, '_', ' ' ) ) ) )
+      , errdesc := 'Test ' || c_trigger_name
+    )
+  ;
+END
+$body$;
+
 CREATE FUNCTION test__functionality
 () RETURNS SETOF text LANGUAGE plpgsql AS $body$
 DECLARE
@@ -83,7 +158,6 @@ BEGIN
     , 'Test null_count(a, b, c)'
   );
 
-
   -- Doesn't work for array types
   /*
   RETURN NEXT bag_eq(
@@ -93,9 +167,36 @@ BEGIN
   );
   */
 
+  RETURN QUERY
+    SELECT pg_temp.test_trigger_raw(
+          '"test trigger"'
+          , 'BEFORE'
+          , trig
+          , CASE
+              WHEN args = '' AND not_ = 'not_'  THEN $$test trigger usage: number of NOT NULL columns[, error message]$$
+              WHEN args = '' AND not_ = ''      THEN $$test trigger usage: number of NULL columns[, error message]$$
+              ELSE 'test trigger: first argument must not be null'
+            END
+          , 'Test ' || trig
+        )
+      FROM (
+        SELECT *, format( '%snull_count_trigger( %s )', not_, args ) AS trig
+          FROM
+            unnest( array['not_', ''] ) not_
+            , unnest( array['NULL', ''] ) args
+        ) a
+  ;
+
+  RETURN QUERY
+    SELECT pg_temp.test_trigger( ba, nn, err )
+      FROM
+        unnest( '{"null",not_null}'::text[] ) AS nn(nn)
+        , unnest( '{BEFORE,AFTER}'::text[] ) AS ba(ba)
+        , unnest( '{"error_message",NULL}'::text[] ) AS err(err)
+  ;
+
 END
 $body$;
-
 
 
 -- vi: expandtab sw=2 ts=2
