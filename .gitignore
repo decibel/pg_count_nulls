@@ -7,3 +7,4 @@ regression.out
 /sql/count_nulls--*
 !/sql/count_nulls--*--*.sql
 .*.swp
+.DS_Store
