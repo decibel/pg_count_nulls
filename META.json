@@ -77,7 +77,6 @@
     "prereqs": {
         "build": {
             "requires": {
-                "X_comment": "Currently uses json_each_text which showed up in 9.3",
                 "PostgreSQL": "9.3.0"
             }
         },
