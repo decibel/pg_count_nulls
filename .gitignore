@@ -1,10 +1,26 @@
-results/
-*.so
-tmp/
+# Editor files
+.*.swp
+
+# Explicitly exclude META.json!
+!/META.json
+
+# Generated make files
+meta.mk
+
+# Compiler output
 *.o
+*.so
+.deps/
+
+# built targets
+/sql/*--*
+!/sql/*--*--*.sql
+
+# Test artifacts
+results/
 regression.diffs
 regression.out
-/sql/count_nulls--*
-!/sql/count_nulls--*--*.sql
-.*.swp
+
+# Misc
+tmp/
 .DS_Store

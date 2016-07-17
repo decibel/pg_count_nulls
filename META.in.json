@@ -13,58 +13,60 @@
 
     "X_comment": "REQUIRED. Name of distribution.",
     "X_comment": "Note! Distribution names currently can't contain spaces.",
-    "name": "DISTRIBUTION_NAME",
+    "name": "count_nulls",
 
     "X_comment": "REQUIRED. Version of the distribution. http://pgxn.org/spec/#version",
-    "version": "0.1.0",
+    "version": "0.9.2",
 
     "X_comment": "REQUIRED. Short description of distribution.",
-    "abstract": "ABSTRACT",
+    "abstract": "Count the number of null arguments",
 
     "X_comment": "Optional. \"description\": A longer description of the distribution. http://pgxn.org/spec/#description",
-    "description": "",
+    "description": "Provides a function that counts the number of null arguments passed to it.",
 
     "X_comment": "REQUIRED. Contact info for distribution maintainers. http://pgxn.org/spec/#maintainer",
-    "maintainer": [ "Your Name <Your@Email>" ],
+    "maintainer": [ "Jim C. Nasby <Jim.Nasby@BlueTreble.com>" ],
 
     "X_comment": "Optional. Status of distribution. Allowed values: unstable, testing, stable",
     "release_status": "unstable",
 
     "X_comment": "REQUIRED. License(s) distribution is released under. http://pgxn.org/spec/#license",
-    "license": "postgresql",
+    "license": {
+        "BSD 2 Clause": "http://opensource.org/licenses/bsd-license.php"
+    },
 
     "X_comment": "REQUIRED. Specifies extensions contained in this distribution. Each key is the name of an extension. http://pgxn.org/spec/#provides",
     "X_comment": "Note! Extension names currently can't contain spaces.",
     "provides": {
-        "EXTENSION_NAME": {
+        "count_nulls": {
             "X_comment": "REQUIRED. File containing extension.",
-            "file": "sql/file.sql",
+            "file": "sql/count_nulls.sql",
 
             "X_comment": "REQUIRED. Version the extension is at.",
-            "version": "0.1.0",
+            "version": "0.9.2",
 
             "X_comment": "Optional: \"abstract\": Description of the extension.",
-            "abstract": "ABSTRACT",
+            "abstract": "Count the number of null arguments",
 
             "X_comment": "Optional: \"docfile\": filesystem path to document file for extension.",
-            "docfile": "",
+            "docfile": "doc/count_nulls.md",
 
             "X_end": ""
         }
     },
 
     "X_comment": "Optional. \"tags\": LIST of TAGS for the distribution. http://pgxn.org/spec/#tags",
-    "tags": [ "", "" ],
+    "tags": [ "NULLs", "Count NULLs", "NULL count" ],
 
     "X_comment": "Optional. \"resources\": Web resources available for this distribution. http://pgxn.org/spec/#resources",
     "resources": {
-        "homepage": "http://github.com/BlueTreble/test_factory/",
+        "homepage": "http://github.com/decibel/pg_count_nulls/",
         "bugtracker": {
-            "web": "http://github.com/BlueTreble/test_factory/issues"
+            "web": "http://github.com/decibel/pg_count_nulls/issues"
         },
         "repository": {
-            "url": "git://github.com/BlueTreble/test_factory.git",
-            "web": "http://github.com/BlueTreble/test_factory/",
+            "url": "git://github.com/decibel/pg_count_nulls.git",
+            "web": "http://github.com/decibel/pg_count_nulls/",
             "type": "git"
         }
     },
@@ -73,12 +75,6 @@
     "X_comment": "Valid keys for 'prereqs' are configure, build, runtime, or test.",
     "X_comment": "Valid keys for 'requires' are requires, recommends, suggests, or conflicts.",
     "prereqs": {
-
-        "build": {
-            "requires": {
-                "PostgreSQL": "9.5.0"
-            }
-        },
         "runtime": {
             "requires": {
                 "plpgsql": 0
