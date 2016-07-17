@@ -16,7 +16,7 @@
     "name": "count_nulls",
 
     "X_comment": "REQUIRED. Version of the distribution. http://pgxn.org/spec/#version",
-    "version": "0.9.3",
+    "version": "0.9.4",
 
     "X_comment": "REQUIRED. Short description of distribution.",
     "abstract": "Count the number of null arguments",
@@ -28,7 +28,7 @@
     "maintainer": [ "Jim C. Nasby <Jim.Nasby@BlueTreble.com>" ],
 
     "X_comment": "Optional. Status of distribution. Allowed values: unstable, testing, stable",
-    "release_status": "unstable",
+    "release_status": "stable",
 
     "X_comment": "REQUIRED. License(s) distribution is released under. http://pgxn.org/spec/#license",
     "license": {
@@ -75,6 +75,12 @@
     "X_comment": "Valid keys for 'prereqs' are configure, build, runtime, or test.",
     "X_comment": "Valid keys for 'requires' are requires, recommends, suggests, or conflicts.",
     "prereqs": {
+        "build": {
+            "requires": {
+                "X_comment": "Currently uses json_each_text which showed up in 9.3",
+                "PostgreSQL": "9.3.0"
+            }
+        },
         "runtime": {
             "requires": {
                 "plpgsql": 0
