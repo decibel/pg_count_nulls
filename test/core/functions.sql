@@ -1,5 +1,17 @@
 CREATE SCHEMA _null_count_test;
-SET SEARCH_PATH = _null_count_test, :schema, tap, "$user";
+SET SEARCH_PATH = _null_count_test, tap, "$user";
+
+CREATE FUNCTION create_ncs(
+  schema_name name
+) RETURNS void LANGUAGE plpgsql AS $body$
+BEGIN
+EXECUTE format(
+  $fmt$CREATE FUNCTION ncs() RETURNS name IMMUTABLE LANGUAGE sql AS $$SELECT %L::name$$;$fmt$
+  , schema_name
+);
+END
+$body$;
+SELECT create_ncs(:'schema');
 
 /*
  * NOTE! Do not use create or replace function in here. If you do that and
@@ -27,20 +39,20 @@ DECLARE
   f_args text[];
 BEGIN
   FOREACH f_name IN ARRAY '{null_count,not_null_count}'::name[] LOOP
-    FOREACH t IN ARRAY '{anyarray,json}'::text[] LOOP
+    FOREACH t IN ARRAY '{anyarray,json,jsonb}'::text[] LOOP
       f_args := array[t];
       RETURN NEXT function_returns(
-        f_name, f_args
+        ncs(), f_name, f_args
         , 'int'::regtype::text -- Sanitize type name
       );
 
       -- TODO: isnt_definer
       RETURN NEXT isnt_strict(
-        f_name, f_args
+        ncs(), f_name, f_args
       );
 
       RETURN NEXT volatility_is(
-        f_name, f_args
+        ncs(), f_name, f_args
         , 'immutable'
       );
     END LOOP;
@@ -49,17 +61,17 @@ BEGIN
   FOREACH f_name IN ARRAY '{null_count_trigger,not_null_count_trigger}'::name[] LOOP
     f_args := '{}';
     RETURN NEXT function_returns(
-      f_name, f_args
+      ncs(), f_name, f_args
       , 'trigger'
     );
 
     -- TODO: isnt_definer
     RETURN NEXT isnt_strict(
-      f_name, f_args
+      ncs(), f_name, f_args
     );
 
     RETURN NEXT volatility_is(
-      f_name, f_args
+      ncs(), f_name, f_args
       , 'immutable'
     );
   END LOOP;
@@ -115,7 +127,8 @@ BEGIN
       c_trigger_name
       , ba
       , exec := format(
-          $$%s_count_trigger(1, %L)$$
+          $$%I.%s_count_trigger(1, %L)$$
+          , ncs()
           , nn
           , err
         )
@@ -146,16 +159,22 @@ BEGIN
   ;
 
   RETURN NEXT bag_eq(
-    $$SELECT a, b, c, null_count( a, b, c ), not_null_count( a, b, c ) FROM test_data$$
+    format($$SELECT a, b, c, %1$I.null_count( a, b, c ), %1$I.not_null_count( a, b, c ) FROM test_data$$, ncs())
     , $$SELECT *, 3-null_count AS not_null_count FROM test_data$$
-    , 'Test null_count(a, b, c)'
+    , format('Test %I.null_count(a, b, c)', ncs())
   );
 
   -- Test JSON versions
+  -- These could be combined...
   RETURN NEXT bag_eq(
-    $$SELECT a, b, c, null_count( row_to_json( row(a, b, c) ) ), not_null_count( row_to_json( row(a, b, c) ) ) FROM test_data$$
+    format($$SELECT a, b, c, %1$I.null_count( row_to_json( row(a, b, c) ) ), %1$I.not_null_count( row_to_json( row(a, b, c) ) ) FROM test_data$$, ncs())
     , $$SELECT *, 3-null_count AS not_null_count FROM test_data$$
-    , 'Test null_count(a, b, c)'
+    , format('Test %I.null_count(json)', ncs())
+  );
+  RETURN NEXT bag_eq(
+    format($$SELECT a, b, c, %1$I.null_count( row_to_json( row(a, b, c) )::jsonb ), %1$I.not_null_count( row_to_json( row(a, b, c) )::jsonb ) FROM test_data$$, ncs())
+    , $$SELECT *, 3-null_count AS not_null_count FROM test_data$$
+    , format('Test %I.null_count(jsonb)', ncs())
   );
 
   -- Doesn't work for array types
@@ -180,7 +199,7 @@ BEGIN
           , 'Test ' || trig
         )
       FROM (
-        SELECT *, format( '%snull_count_trigger( %s )', not_, args ) AS trig
+        SELECT *, format( '%I.%snull_count_trigger( %s )', ncs(), not_, args ) AS trig
           FROM
             unnest( array['not_', ''] ) not_
             , unnest( array['NULL', ''] ) args

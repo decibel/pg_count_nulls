@@ -16,7 +16,7 @@ SELECT count(*)::int
 $body$;
 CREATE OR REPLACE FUNCTION null_count(
   argument json
-) RETURNS int LANGUAGE sql IMMUTABLE AS 'SELECT null_count($1::jsonb)';
+) RETURNS int LANGUAGE sql IMMUTABLE AS 'SELECT @extschema@.null_count($1::jsonb)';
 
 CREATE OR REPLACE FUNCTION null_count_trigger(
 ) RETURNS trigger LANGUAGE plpgsql IMMUTABLE AS $body$
@@ -34,7 +34,7 @@ BEGIN
     RAISE '%: first argument must not be null', TG_NAME;
   END IF;
 
-  IF null_count( row_to_json(NEW) ) <> TG_ARGV[0]::int THEN
+  IF @extschema@.null_count( row_to_json(NEW) ) <> TG_ARGV[0]::int THEN
     RAISE '%', c_msg;
   END IF;
 
@@ -59,7 +59,7 @@ SELECT count(*)::int
 $body$;
 CREATE OR REPLACE FUNCTION not_null_count(
   argument json
-) RETURNS int LANGUAGE sql IMMUTABLE AS 'SELECT not_null_count($1::jsonb)';
+) RETURNS int LANGUAGE sql IMMUTABLE AS 'SELECT @extschema@.not_null_count($1::jsonb)';
 
 CREATE OR REPLACE FUNCTION not_null_count_trigger(
 ) RETURNS trigger LANGUAGE plpgsql IMMUTABLE AS $body$
@@ -77,7 +77,7 @@ BEGIN
     RAISE '%: first argument must not be null', TG_NAME;
   END IF;
 
-  IF not_null_count( row_to_json(NEW) ) <> TG_ARGV[0]::int THEN
+  IF @extschema@.not_null_count( row_to_json(NEW) ) <> TG_ARGV[0]::int THEN
     RAISE '%', c_msg;
   END IF;
 
