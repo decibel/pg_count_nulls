@@ -1,32 +1,42 @@
 \set ECHO none
-
+    # Subtest: _null_count_test.test__check_ncs()
+    ok 1
+    ok 2 - schema schema_to_load_count_nulls should not be in search path ({pg_temp_2,pg_catalog,_null_count_test,tap,public})
+    1..2
+ok 1 - _null_count_test.test__check_ncs
     # Subtest: _null_count_test.test__definition()
-    ok 1 - Function schema_to_load_count_nulls.null_count(anyarray) should return integer
-    ok 2 - Function schema_to_load_count_nulls.null_count(anyarray) should not be strict
-    ok 3 - Function schema_to_load_count_nulls.null_count(anyarray) should be IMMUTABLE
-    ok 4 - Function schema_to_load_count_nulls.null_count(json) should return integer
-    ok 5 - Function schema_to_load_count_nulls.null_count(json) should not be strict
-    ok 6 - Function schema_to_load_count_nulls.null_count(json) should be IMMUTABLE
-    ok 7 - Function schema_to_load_count_nulls.null_count(jsonb) should return integer
-    ok 8 - Function schema_to_load_count_nulls.null_count(jsonb) should not be strict
-    ok 9 - Function schema_to_load_count_nulls.null_count(jsonb) should be IMMUTABLE
-    ok 10 - Function schema_to_load_count_nulls.not_null_count(anyarray) should return integer
-    ok 11 - Function schema_to_load_count_nulls.not_null_count(anyarray) should not be strict
-    ok 12 - Function schema_to_load_count_nulls.not_null_count(anyarray) should be IMMUTABLE
-    ok 13 - Function schema_to_load_count_nulls.not_null_count(json) should return integer
-    ok 14 - Function schema_to_load_count_nulls.not_null_count(json) should not be strict
-    ok 15 - Function schema_to_load_count_nulls.not_null_count(json) should be IMMUTABLE
-    ok 16 - Function schema_to_load_count_nulls.not_null_count(jsonb) should return integer
-    ok 17 - Function schema_to_load_count_nulls.not_null_count(jsonb) should not be strict
-    ok 18 - Function schema_to_load_count_nulls.not_null_count(jsonb) should be IMMUTABLE
-    ok 19 - Function schema_to_load_count_nulls.null_count_trigger() should return trigger
-    ok 20 - Function schema_to_load_count_nulls.null_count_trigger() should not be strict
-    ok 21 - Function schema_to_load_count_nulls.null_count_trigger() should be IMMUTABLE
-    ok 22 - Function schema_to_load_count_nulls.not_null_count_trigger() should return trigger
-    ok 23 - Function schema_to_load_count_nulls.not_null_count_trigger() should not be strict
-    ok 24 - Function schema_to_load_count_nulls.not_null_count_trigger() should be IMMUTABLE
-    1..24
-ok 1 - _null_count_test.test__definition
+    ok 1 - ensure null_count({anyarray}) is not in search_path({pg_temp_2,pg_catalog,_null_count_test,tap,public})
+    ok 2 - Function schema_to_load_count_nulls.null_count(anyarray) should return integer
+    ok 3 - Function schema_to_load_count_nulls.null_count(anyarray) should not be strict
+    ok 4 - Function schema_to_load_count_nulls.null_count(anyarray) should be IMMUTABLE
+    ok 5 - ensure null_count({json}) is not in search_path({pg_temp_2,pg_catalog,_null_count_test,tap,public})
+    ok 6 - Function schema_to_load_count_nulls.null_count(json) should return integer
+    ok 7 - Function schema_to_load_count_nulls.null_count(json) should not be strict
+    ok 8 - Function schema_to_load_count_nulls.null_count(json) should be IMMUTABLE
+    ok 9 - ensure null_count({jsonb}) is not in search_path({pg_temp_2,pg_catalog,_null_count_test,tap,public})
+    ok 10 - Function schema_to_load_count_nulls.null_count(jsonb) should return integer
+    ok 11 - Function schema_to_load_count_nulls.null_count(jsonb) should not be strict
+    ok 12 - Function schema_to_load_count_nulls.null_count(jsonb) should be IMMUTABLE
+    ok 13 - ensure not_null_count({anyarray}) is not in search_path({pg_temp_2,pg_catalog,_null_count_test,tap,public})
+    ok 14 - Function schema_to_load_count_nulls.not_null_count(anyarray) should return integer
+    ok 15 - Function schema_to_load_count_nulls.not_null_count(anyarray) should not be strict
+    ok 16 - Function schema_to_load_count_nulls.not_null_count(anyarray) should be IMMUTABLE
+    ok 17 - ensure not_null_count({json}) is not in search_path({pg_temp_2,pg_catalog,_null_count_test,tap,public})
+    ok 18 - Function schema_to_load_count_nulls.not_null_count(json) should return integer
+    ok 19 - Function schema_to_load_count_nulls.not_null_count(json) should not be strict
+    ok 20 - Function schema_to_load_count_nulls.not_null_count(json) should be IMMUTABLE
+    ok 21 - ensure not_null_count({jsonb}) is not in search_path({pg_temp_2,pg_catalog,_null_count_test,tap,public})
+    ok 22 - Function schema_to_load_count_nulls.not_null_count(jsonb) should return integer
+    ok 23 - Function schema_to_load_count_nulls.not_null_count(jsonb) should not be strict
+    ok 24 - Function schema_to_load_count_nulls.not_null_count(jsonb) should be IMMUTABLE
+    ok 25 - Function schema_to_load_count_nulls.null_count_trigger() should return trigger
+    ok 26 - Function schema_to_load_count_nulls.null_count_trigger() should not be strict
+    ok 27 - Function schema_to_load_count_nulls.null_count_trigger() should be IMMUTABLE
+    ok 28 - Function schema_to_load_count_nulls.not_null_count_trigger() should return trigger
+    ok 29 - Function schema_to_load_count_nulls.not_null_count_trigger() should not be strict
+    ok 30 - Function schema_to_load_count_nulls.not_null_count_trigger() should be IMMUTABLE
+    1..30
+ok 2 - _null_count_test.test__definition
     # Subtest: _null_count_test.test__functionality()
     ok 1 - Test schema_to_load_count_nulls.null_count(a, b, c)
     ok 2 - Test schema_to_load_count_nulls.null_count(json)
@@ -68,7 +78,10 @@ ok 1 - _null_count_test.test__definition
     ok 38 - Test "not_null_AFTER_"
     ok 39 - DROP TRIGGER "not_null_AFTER_"
     1..39
-ok 2 - _null_count_test.test__functionality
-ok 3
-ok 4
+ok 3 - _null_count_test.test__functionality
+    # Subtest: _null_count_test.test__shutdown__drop_all()
+    ok 1
+    ok 2
+    1..2
+ok 4 - _null_count_test.test__shutdown__drop_all
 1..4

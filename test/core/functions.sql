@@ -1,18 +1,11 @@
 CREATE SCHEMA _null_count_test;
-SET SEARCH_PATH = _null_count_test, tap, "$user";
 
-CREATE FUNCTION create_ncs(
-  schema_name name
-) RETURNS void LANGUAGE plpgsql AS $body$
-BEGIN
-EXECUTE format(
-  $fmt$CREATE FUNCTION ncs() RETURNS name IMMUTABLE LANGUAGE sql AS $$SELECT %L::name$$;$fmt$
-  , schema_name
-);
-END
-$body$;
-SELECT create_ncs(:'schema');
+-- See bottom as well!
+SET SEARCH_PATH = _null_count_test, tap;
 
+CREATE FUNCTION ncs() RETURNS name IMMUTABLE LANGUAGE sql AS $$
+SELECT nspname FROM pg_namespace n JOIN pg_extension x ON n.oid = x.extnamespace WHERE extname = 'count_nulls'
+$$;
 /*
  * NOTE! Do not use create or replace function in here. If you do that and
  * accidentally try to define the same function twice you'll never detect that
@@ -41,6 +34,15 @@ BEGIN
   FOREACH f_name IN ARRAY '{null_count,not_null_count}'::name[] LOOP
     FOREACH t IN ARRAY '{anyarray,json,jsonb}'::text[] LOOP
       f_args := array[t];
+
+      -- If the installed schema isn't in our search path
+      IF NOT current_schemas(true)@>array[ncs()] THEN
+        RETURN NEXT hasnt_function(
+          f_name, f_args
+          , format('ensure %s(%s) is not in search_path(%s)', f_name, f_args, current_schemas(true))
+        );
+      END IF;
+
       RETURN NEXT function_returns(
         ncs(), f_name, f_args
         , 'int'::regtype::text -- Sanitize type name
@@ -217,5 +219,6 @@ BEGIN
 END
 $body$;
 
+SET SEARCH_PATH = _null_count_test, tap, :schema;
 
 -- vi: expandtab sw=2 ts=2
