@@ -31,7 +31,7 @@ BEGIN
       f_args := array[t];
       RETURN NEXT function_returns(
         f_name, f_args
-        , 'bigint'
+        , 'int'::regtype::text -- Sanitize type name
       );
 
       -- TODO: isnt_definer

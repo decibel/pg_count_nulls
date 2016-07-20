@@ -1,15 +1,15 @@
 \set ECHO none
     # Subtest: _null_count_test.test__definition()
-    ok 1 - Function null_count(anyarray) should return bigint
+    ok 1 - Function null_count(anyarray) should return integer
     ok 2 - Function null_count(anyarray) should not be strict
     ok 3 - Function null_count(anyarray) should be IMMUTABLE
-    ok 4 - Function null_count(json) should return bigint
+    ok 4 - Function null_count(json) should return integer
     ok 5 - Function null_count(json) should not be strict
     ok 6 - Function null_count(json) should be IMMUTABLE
-    ok 7 - Function not_null_count(anyarray) should return bigint
+    ok 7 - Function not_null_count(anyarray) should return integer
     ok 8 - Function not_null_count(anyarray) should not be strict
     ok 9 - Function not_null_count(anyarray) should be IMMUTABLE
-    ok 10 - Function not_null_count(json) should return bigint
+    ok 10 - Function not_null_count(json) should return integer
     ok 11 - Function not_null_count(json) should not be strict
     ok 12 - Function not_null_count(json) should be IMMUTABLE
     ok 13 - Function null_count_trigger() should return trigger
