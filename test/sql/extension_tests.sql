@@ -20,7 +20,8 @@ BEGIN
     RETURN NEXT is(
         current_schemas(true) @> array[s]
         , false
-        , format('schema %I should not be in search path (%s)', s, current_schemas(true))
+        --, format('schema %I should not be in search path (%s)', s, current_schemas(true))
+        , format('schema %I should not be in search path', s) --, current_schemas(true))
     );
 END
 $body$;

@@ -39,7 +39,7 @@ BEGIN
       IF NOT current_schemas(true)@>array[ncs()] THEN
         RETURN NEXT hasnt_function(
           f_name, f_args
-          , format('ensure %s(%s) is not in search_path(%s)', f_name, f_args, current_schemas(true))
+          , format('ensure %s(%s) is not in search_path', f_name, f_args)
         );
       END IF;
 
