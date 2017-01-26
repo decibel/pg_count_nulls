@@ -1,6 +1,4 @@
 \set ECHO none
-psql:test/helpers/setup.sql:7: NOTICE:  42P06: schema "public" already exists, skipping
-LOCATION:  CreateSchemaCommand, schemacmds.c:115
     # Subtest: _null_count_test.test__definition()
     ok 1 - Function public.null_count(anyarray) should return integer
     ok 2 - Function public.null_count(anyarray) should not be strict

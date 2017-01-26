@@ -4,6 +4,7 @@ BEGIN;
 -- Put dependencies here
 --CREATE EXTENSION IF NOT EXISTS variant;
 
+SET client_min_messages = WARNING;
 CREATE SCHEMA IF NOT EXISTS :schema;
 SET search_path = :schema;
 
